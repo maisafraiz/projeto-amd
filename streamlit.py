@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 import seaborn as sns
+import numpy as np
 
 st.write('# Introdução')
 
@@ -13,9 +14,10 @@ st.write('# Conheça os nossos dados')
 
 df_escola_em = pd.read_pickle('df_escola_em.pkl')
 
-st.table(df_escola_em.head(10))
+head = st.number_input("Selecione quantas linhas você deseja:", 1, 50)
+st.dataframe(df_escola_em.head(head))
 
-option = st.selectbox(
+option = st.radio(
      'Escolha uma visualização',
      ('Correlação', 'Outra'))
 
@@ -41,3 +43,4 @@ if option == 'Correlação':
     st.set_option('deprecation.showPyplotGlobalUse', False)
 elif option == 'Outra':
     st.write('No processo de adicionar mais')
+    
