@@ -6,20 +6,28 @@ import pickle
 import seaborn as sns
 import numpy as np
 
-st.write('# Introdução')
+st.title('Trabalho de AMD')
+
+st.header('Introdução')
 
 st.write('O objetivo do nosso projeto é entender quais são os fatores que influenciam os jovens e a educação brasileira. Utilizando os dados do INEP (Instituto Nacional de Estudos e Pesquisas Educacionais), podemos coletar o município, uf, média de alunos por turma, a taxa de reprovação, a taxa de abandono, a situação socio-econômica e diversas outras informações sobre o Ensino Médio de milhares de escolas ao redor do país e usar isso pra nos ajudar a compreender o que está por trás de uma educação de sucesso (ou não).')
 
-st.write('# Conheça os nossos dados')
+st.header('Conheça os nossos dados')
+
+visualizar = st.radio('Escolha as colunas',['Todas', 'Selecionar colunas'])
 
 df_escola_em = pd.read_pickle('df_escola_em.pkl')
 
 df_escola_em.rename(columns={'id_escola': 'ID Escola', 'taxa_aprovacao_em': 'Taxa de Aprovação', 'taxa_reprovacao_em': 'Taxa de Reprovação', 'taxa_abandono_em':'Taxa de Abandono', 'ano': 'Ano', 'rede': 'Rede', 'localizacao': 'Localização', 'atu_em': 'Média de Alunos por Turma', 'had_em': 'Média de Horas-Aula Diária', 'tdi_em':'Taxa de Distorção Idade-Série', 'dsu_em':'Porcentual de Docentes com Curso Superior', 'regiao':'Região'}, inplace = True)
 
-colunas = st.multiselect("Selecione as colunas", ['ID Escola', 'Taxa de Aprovação','Taxa de Reprovação', 'Taxa de Abandono', 'Ano', 'Rede', 'Localização', 'Média de Alunos por Turma','Média de Horas-Aula Diária','Taxa de Distorção Idade-Série', 'Porcentual de Docentes com Curso Superior', 'Região'])
-head = st.number_input("Selecione quantas linhas você deseja:", 1, 50)
+if visualizar == "Selecionar colunas":
+    colunas = st.multiselect("Selecione as colunas", ['ID Escola', 'Taxa de Aprovação','Taxa de Reprovação', 'Taxa de Abandono', 'Ano', 'Rede', 'Localização', 'Média de Alunos por Turma','Média de Horas-Aula Diária','Taxa de Distorção Idade-Série', 'Porcentual de Docentes com Curso Superior', 'Região'])
+else:
+    colunas = ['ID Escola', 'Taxa de Aprovação','Taxa de Reprovação', 'Taxa de Abandono', 'Ano', 'Rede', 'Localização', 'Média de Alunos por Turma','Média de Horas-Aula Diária','Taxa de Distorção Idade-Série', 'Porcentual de Docentes com Curso Superior', 'Região']
 
-st.dataframe(df_escola_em.head(head))
+head = st.number_input("Digite quantas linhas você deseja:", 1, 100)
+
+st.dataframe(df_escola_em.head(head)[colunas])
 
 option = st.radio(
      'Escolha uma visualização',
