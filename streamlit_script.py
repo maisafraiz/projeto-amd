@@ -31,28 +31,65 @@ st.dataframe(df_escola_em.head(head)[colunas])
 
 option = st.radio(
      'Escolha uma visualização',
-     ('Correlação', 'Outra'))
+     ('Correlação das colunas', 'Média de aprovações por rede e localização', 'Média de reprovações por rede e localização', 'Média da taxa de abandono por rede e localização', 'Média de abandono ao longo do tempo'))
 
 df_escola_em_dummies = pd.read_pickle('df_escola_em_dummies.pkl')
-corr = df_escola_em_dummies.corr()
-fig = sns.set(rc={'figure.figsize':(13.7,10.27)})
+df_escola_em_dummies.rename(columns={'taxa_aprovacao_em': 'Taxa de Aprovação', 'taxa_reprovacao_em': 'Taxa de Reprovação', 'taxa_abandono_em':'Taxa de Abandono', 'ano': 'Ano', 'rede_estadual': 'Rede Estadual', 'rede_federal': 'Rede Federal','rede_municipal': 'Rede Municipal','rede_privada': 'Rede Privada', 'localizacao_rural': 'Rural', 'localizacao_urbana': 'Urbana','atu_em': 'Média de Alunos por Turma', 'had_em': 'Média de Horas-Aula Diária', 'tdi_em':'Taxa de Distorção Idade-Série', 'dsu_em':'Porcentual de Docentes com Curso Superior', 'regiao_Centro-Oeste':'Região Centro-Oeste', 'regiao_Nordeste':'Região Nordeste', 'regiao_Sudeste':'Região Sudeste', 'regiao_Sul':'Região Sul'}, inplace = True)
 
-ax = sns.heatmap(   corr, 
+
+corr = df_escola_em_dummies.corr()
+
+
+fig = sns.set(rc={'figure.figsize':(15.7,12.27)})
+
+if option == 'Correlação das colunas':
+    ax = sns.heatmap(corr, 
                     vmin=-1, vmax=1, center=0, 
                     cmap=sns.diverging_palette(20, 220, n=200), 
-                    square=True
-                )
-ax.set_xticklabels(
-    ax.get_xticklabels(),
-    rotation=65,
-    horizontalalignment='right'
-);
-
-if option == 'Correlação':
-
+                    square=True)
+    ax.set_xticklabels(
+        ax.get_xticklabels(),
+        rotation=65,
+        horizontalalignment='right');
     st.pyplot(fig)
-
     st.set_option('deprecation.showPyplotGlobalUse', False)
-elif option == 'Outra':
-    st.write('No processo de adicionar mais')
+elif option == 'Média de aprovações por rede e localização':
+    media_aprovacao = df_escola_em[['Taxa de Aprovação', 'Rede', 'Localização']].groupby(['Rede', 'Localização'], as_index=False).mean()
+    sns.catplot(
+        x = 'Rede',
+        y = 'Taxa de Aprovação',
+        hue = 'Localização',
+        kind = 'bar',
+        data = media_aprovacao
+    );
+    st.pyplot(fig)
+elif option == 'Média de reprovações por rede e localização':
+    st.write("puta merda mano")
+    media_reprovacao = df_escola_em[['Taxa de Reprovação', 'Rede', 'Localização']].groupby(['Rede', 'Localização'], as_index=False).mean()
+    sns.catplot(
+        x = 'Rede',
+        y = 'Taxa de Reprovação',
+        hue = 'Localização',
+        kind = 'bar',
+        data = media_reprovacao
+    );
+    st.pyplot(fig)
+elif option == 'Média da taxa de abandono por rede e localização':
+    media_abandono = df_escola_em[['Taxa de Abandono', 'Rede', 'Localização']].groupby(['Rede', 'Localização'], as_index=False).mean()
+    sns.catplot(
+        x = 'Rede',
+        y = 'Taxa de Abandono',
+        hue = 'Localização',
+        kind = 'bar',
+        data = media_abandono
+    );    
+    st.pyplot(fig)
     
+    #Não to conseguindo fazer esse rodar!!
+elif option == 'Média de abandono ao longo do tempo':
+#     media_abandono = df_escola_em[['Taxa de Abandono', 'Rede', 'Localização', 'Ano']].groupby(['Ano', 'Rede', 'Localização'], as_index=False).mean()
+#     media_abandono["Ano"] = media_abandono["Ano"].astype('str')
+#     sns.relplot(x=media_abandono['Ano'], y=media_abandono["Taxa de Abandono"],
+#                 col=media_abandono["Rede"], row=media_abandono["Localização"], height=3,
+#                 estimator=None, data=media_abandono, kind = "line");
+    st.write('Problemas técnicos...')
