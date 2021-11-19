@@ -5,6 +5,7 @@ import pandas as pd
 import pickle
 import seaborn as sns
 import numpy as np
+import plotly.express as px
 
 st.title('Trabalho de AMD')
 
@@ -40,7 +41,7 @@ df_escola_em_dummies.rename(columns={'taxa_aprovacao_em': 'Taxa de Aprovação',
 corr = df_escola_em_dummies.corr()
 
 
-fig = sns.set(rc={'figure.figsize':(15.7,12.27)})
+fig = sns.set(rc={'figure.figsize':(10, 10)})
 
 if option == 'Correlação das colunas':
     ax = sns.heatmap(corr, 
@@ -53,6 +54,7 @@ if option == 'Correlação das colunas':
         horizontalalignment='right');
     st.pyplot(fig)
     st.set_option('deprecation.showPyplotGlobalUse', False)
+    st.set_option('deprecation.showPyplotGlobalUse', False)
 elif option == 'Média de aprovações por rede e localização':
     media_aprovacao = df_escola_em[['Taxa de Aprovação', 'Rede', 'Localização']].groupby(['Rede', 'Localização'], as_index=False).mean()
     sns.catplot(
@@ -64,7 +66,6 @@ elif option == 'Média de aprovações por rede e localização':
     );
     st.pyplot(fig)
 elif option == 'Média de reprovações por rede e localização':
-    st.write("puta merda mano")
     media_reprovacao = df_escola_em[['Taxa de Reprovação', 'Rede', 'Localização']].groupby(['Rede', 'Localização'], as_index=False).mean()
     sns.catplot(
         x = 'Rede',
@@ -87,9 +88,19 @@ elif option == 'Média da taxa de abandono por rede e localização':
     
     #Não to conseguindo fazer esse rodar!!
 elif option == 'Média de abandono ao longo do tempo':
-#     media_abandono = df_escola_em[['Taxa de Abandono', 'Rede', 'Localização', 'Ano']].groupby(['Ano', 'Rede', 'Localização'], as_index=False).mean()
-#     media_abandono["Ano"] = media_abandono["Ano"].astype('str')
-#     sns.relplot(x=media_abandono['Ano'], y=media_abandono["Taxa de Abandono"],
-#                 col=media_abandono["Rede"], row=media_abandono["Localização"], height=3,
-#                 estimator=None, data=media_abandono, kind = "line");
-    st.write('Problemas técnicos...')
+    media_abandono2 = df_escola_em[['Taxa de Abandono', 'Rede', 'Localização', 'Ano']].groupby(['Ano', 'Rede', 'Localização'], as_index=False).mean()
+    media_abandono2["Ano"] = media_abandono2["Ano"].astype('str')
+    # rede = st.selectbox(
+    #  'Escolha a rede',
+    #  ('Estadual', 'Federal', 'Municipal', 'Privada'))
+    localizacao = st.selectbox('Escolha a localização', ('Rural', 'Urbana'))
+    media_abandono2 = media_abandono2.loc[(media_abandono2['Localização'] == localizacao.lower())]
+    # fig = sns.set(rc={'figure.figsize':(5,5)})
+
+    # rel = sns.relplot(x=media_abandono2['Ano'], y=media_abandono2["Taxa de Abandono"],
+    #                col=media_abandono2["Rede"], row=media_abandono2["Localização"], height=3,
+    #                estimator=None, data=media_abandono2, kind = "line");
+    # rel.set(xticks=[])
+    fig = px.line(media_abandono2, x="Ano", y="Taxa de Abandono", color='Rede', template = 'simple_white'
+)
+    st.plotly_chart(fig)
