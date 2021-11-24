@@ -1,0 +1,9 @@
+basedosdados
+requests
+BeautifulSoup
+numpy
+matplotlib
+seaborn
+pandas
+pickle
+sklearn
