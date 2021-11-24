@@ -4,5 +4,4 @@ numpy
 matplotlib
 seaborn
 pandas
-pickle
 sklearn
