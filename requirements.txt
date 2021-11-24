@@ -1,6 +1,5 @@
 basedosdados
 requests
-BeautifulSoup
 numpy
 matplotlib
 seaborn
