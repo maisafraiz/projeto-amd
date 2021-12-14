@@ -154,9 +154,9 @@ atu_modelo = st.number_input("Digite a média de aluno por turma", step = 0.01)
 had_modelo = st.number_input("Digite a média de horas-aula diárias", step = 0.01)
 tdi_modelo = st.number_input('Digite a taxa de distorção idade-série', step = 0.01)
 dsu_modelo = st.number_input('Digite o porcentual de docentes com curso superior', step = 0.01, help = "Se deseja 100%, digite 100, e não 1")
-rede_modelo = st.selectbox("Escolha a rede", ["Estudual", "Federal", "Municipal", "Privada"])
-localizacao_modelo = st.selectbox('Escolha a localização', ['Rural', 'Urbana'])
-regiao_modelo = st.selectbox('Escolha a região', ['Centro-Oeste', 'Nordeste', 'Norte', 'Sudeste', 'Sul'])
+rede_modelo = st.selectbox("Escolha a rede", ["Estudual", "Federal", "Municipal", "Privada"], key = 1)
+localizacao_modelo = st.selectbox('Escolha a localização', ['Rural', 'Urbana'], key = 2)
+regiao_modelo = st.selectbox('Escolha a região', ['Centro-Oeste', 'Nordeste', 'Norte', 'Sudeste', 'Sul'], key = 3)
 
 def normaliza(valor, coluna):
     valmin = df_escola_em[coluna].min()
@@ -221,11 +221,17 @@ else:
     resultado = modelinho.predict(array)
 
 
-st.subheader("Resultado")
+st.subheader(f"Resultado {taxa}")
 
-st.write(taxa, ": ", resultado)
+resultado_final = resultado[0]
 
-terminado = st.checkbox("Marque aqui se oficialmente acabou o período e começou as férias.")
+st.markdown(f"""
+#### {resultado_final}
+""")
+
+st.markdown("***")
+
+terminado = st.checkbox("Marque aqui se oficialmente acabou o período e começou as férias...")
 
 if terminado:
     st.write("Hurrayy!")
