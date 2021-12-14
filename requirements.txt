@@ -1,3 +1,4 @@
+streamlit
 basedosdados
 requests
 numpy
