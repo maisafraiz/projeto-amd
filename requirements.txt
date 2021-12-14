@@ -7,3 +7,4 @@ seaborn
 pandas
 sklearn
 plotly
+pickle==4.0
