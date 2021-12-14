@@ -131,19 +131,17 @@ else:
     
 st.header('Modelo')
 
-st.write('Usando o algoritmo supervisionado Random Forest, treinamos um modelo que busca, dadas as informações disponível sobre uma escola, prever a taxa de aprovação, taxa de reprovação ou taxa de abandono da mesma.')
+st.write('Usando o algoritmo supervisionado Random Forest, treinamos um modelo que busca, dadas as informações disponíveis sobre uma escola, prever a taxa de aprovação ou a taxa de abandono da mesma.')
 st.write('Podemos testar esse modelo alimentando-o com informações de uma escola fictícia e observando taxa que nos é retornada.')
 st.write('Primeiramente, devemos escolher uma taxa para prever.')
 st.subheader("Taxa")
 
-taxa = st.selectbox("Selecione a taxa", ["Taxa de Aprovação", "Taxa de Reprovação", "Taxa de Abandono"])
+taxa = st.selectbox("Selecione a taxa", ["Taxa de Aprovação", "Taxa de Abandono"])
 
 if taxa == 'Taxa de Aprovação':
-    st.write('A acurácia final desse modelo foi de 60.41%. Isso pode ser justificado pela baixa correlação entre os dados.')
-elif taxa == "Taxa de Reprovação":
-    st.write('A acurácia final desse modelo foi de 37.82%. Isso pode ser justificado pela baixa correlação entre os dados.')
+    st.write('A acurácia final desse modelo foi de 56.1%. Isso pode ser justificado pela baixa correlação entre os dados.')
 else:
-    st.write('A acurácia final desse modelo foi de 56.32%. Isso pode ser justificado pela baixa correlação entre os dados.')
+    st.write('A acurácia final desse modelo foi de 52.96%. Isso pode ser justificado pela baixa correlação entre os dados.')
 
 
 st.subheader("Dados")
@@ -153,10 +151,10 @@ st.write("Agora, digite os dados da escola.")
 #Ano, Atu, Had, Tdi, Dsu, estadual, federal, municipal, privada, rural, urbana, centro oeste, nordeste, norte, sudeste, sul
 ano_modelo = st.number_input("Digite o ano", step = 1)
 atu_modelo = st.number_input("Digite a média de aluno por turma", step = 0.01)
-had_modelo = st.number_input("Digite a média de hora aula diária", step = 0.01)
+had_modelo = st.number_input("Digite a média de horas-aula diárias", step = 0.01)
 tdi_modelo = st.number_input('Digite a taxa de distorção idade-série', step = 0.01)
 dsu_modelo = st.number_input('Digite o porcentual de docentes com curso superior', step = 0.01, help = "Se deseja 100%, digite 100, e não 1")
-rede_modelo = st.selectbox("Escolha a rede", ["Estudual", "Federal", "Minucipal", "Privada"])
+rede_modelo = st.selectbox("Escolha a rede", ["Estudual", "Federal", "Municipal", "Privada"])
 localizacao_modelo = st.selectbox('Escolha a localização', ['Rural', 'Urbana'])
 regiao_modelo = st.selectbox('Escolha a região', ['Centro-Oeste', 'Nordeste', 'Norte', 'Sudeste', 'Sul'])
 
@@ -217,16 +215,20 @@ if taxa == 'Taxa de Aprovação':
     with open("models/model_aprovacao.pkl", 'rb') as file:  
         modelinho = pickle.load(file)
     resultado = modelinho.predict(array)
-elif taxa == "Taxa de Reprovação":
-    with open("models/model_reprovacao.pkl.pkl", 'rb') as file:  
-        modelinho = pickle.load(file)
-    resultado = modelinho.predict(array)
 else:
     with open("models/model_abandono.pkl", 'rb') as file:  
         modelinho = pickle.load(file)
     resultado = modelinho.predict(array)
 
 
-st.write(resultado)
+st.subheader("Resultado")
+
+st.write(taxa, ": ", resultado)
+
+terminado = st.checkbox("Marque aqui se oficialmente acabou o período e começou as férias.")
+
+if terminado:
+    st.write("Hurrayy!")
+    st.balloons()
 
 
