@@ -68,7 +68,6 @@ if option == 'Correlação das colunas':
         horizontalalignment='right');
     st.pyplot(fig)
     st.set_option('deprecation.showPyplotGlobalUse', False)
-    st.set_option('deprecation.showPyplotGlobalUse', False)
 elif option == 'Média de aprovações por rede e localização':
     st.subheader("Média de aprovações, filtrada por rede e localização.")
     st.write("Nesse histograma, é possível perceber que a taxa de aprovação não parece estar fortemente relacionada com esses dados. Apesar, por exemplo, de ser maior em escolas privadas do que municipais, a diferença não é muito significativa, e a localização ser rural ou urbana não parece ser de muita influência.")
@@ -131,3 +130,103 @@ else:
     st.pyplot(fig)
     
 st.header('Modelo')
+
+st.write('Usando o algoritmo supervisionado Random Forest, treinamos um modelo que busca, dadas as informações disponível sobre uma escola, prever a taxa de aprovação, taxa de reprovação ou taxa de abandono da mesma.')
+st.write('Podemos testar esse modelo alimentando-o com informações de uma escola fictícia e observando taxa que nos é retornada.')
+st.write('Primeiramente, devemos escolher uma taxa para prever.')
+st.subheader("Taxa")
+
+taxa = st.selectbox("Selecione a taxa", ["Taxa de Aprovação", "Taxa de Reprovação", "Taxa de Abandono"])
+
+if taxa == 'Taxa de Aprovação':
+    st.write('A acurácia final desse modelo foi de 60.41%. Isso pode ser justificado pela baixa correlação entre os dados.')
+elif taxa == "Taxa de Reprovação":
+    st.write('A acurácia final desse modelo foi de 37.82%. Isso pode ser justificado pela baixa correlação entre os dados.')
+else:
+    st.write('A acurácia final desse modelo foi de 56.32%. Isso pode ser justificado pela baixa correlação entre os dados.')
+
+
+st.subheader("Dados")
+
+st.write("Agora, digite os dados da escola.")
+
+#Ano, Atu, Had, Tdi, Dsu, estadual, federal, municipal, privada, rural, urbana, centro oeste, nordeste, norte, sudeste, sul
+ano_modelo = st.number_input("Digite o ano", step = 1)
+atu_modelo = st.number_input("Digite a média de aluno por turma", step = 0.01)
+had_modelo = st.number_input("Digite a média de hora aula diária", step = 0.01)
+tdi_modelo = st.number_input('Digite a taxa de distorção idade-série', step = 0.01)
+dsu_modelo = st.number_input('Digite o porcentual de docentes com curso superior', step = 0.01, help = "Se deseja 100%, digite 100, e não 1")
+rede_modelo = st.selectbox("Escolha a rede", ["Estudual", "Federal", "Minucipal", "Privada"])
+localizacao_modelo = st.selectbox('Escolha a localização', ['Rural', 'Urbana'])
+regiao_modelo = st.selectbox('Escolha a região', ['Centro-Oeste', 'Nordeste', 'Norte', 'Sudeste', 'Sul'])
+
+def normaliza(valor, coluna):
+    valmin = df_escola_em[coluna].min()
+    valmax = df_escola_em[coluna].max()
+    normalizado = (valor - valmin)/(valmax - valmin)
+    return normalizado
+
+
+ano_vect = ano_modelo
+atu_vect = normaliza(atu_modelo, 'Média de Alunos por Turma')
+had_vect = normaliza(had_modelo, 'Média de Horas-Aula Diária')
+tdi_vect = normaliza(tdi_modelo, 'Taxa de Distorção Idade-Série')
+dsu_vect = dsu_modelo/100
+
+
+estadual_vect, federal_vect, municipal_vect, privada_vect = 0, 0, 0, 0
+if rede_modelo == "Estadual":
+    estadual_vect = 1
+elif rede_modelo == "Federal":
+    federal_vect = 1
+  
+elif rede_modelo == "Municipal":
+    municipal_vect = 1
+else:
+    privada_vect = 1
+    
+    
+rural_vect, urbana_vect = 0, 0
+if localizacao_modelo == "Rural":
+    rural_vect = 1
+else:
+    urbana_vect = 1
+    
+centrooeste_vect, nordeste_vect, norte_vect, sudeste_vect, sul_vect = 0, 0, 0, 0, 0
+if regiao_modelo == 'Centro-Oeste':
+    centrooeste_vect = 1
+elif regiao_modelo == 'Nordeste':
+    nordeste_vect = 1
+elif regiao_modelo == 'Norte':
+    norte_vect = 1
+elif regiao_modelo == 'Sudeste':
+    sudeste_vect = 1
+else:
+    sul_vect = 1
+    
+
+vect = [ano_vect, atu_vect, had_vect, tdi_vect, dsu_vect, estadual_vect, 
+        federal_vect, municipal_vect, privada_vect, rural_vect, urbana_vect, 
+        centrooeste_vect, nordeste_vect, norte_vect, sudeste_vect, sul_vect] 
+   
+array = np.array(vect)
+array = array.reshape(1, -1)
+
+
+if taxa == 'Taxa de Aprovação':
+    with open("models/model_aprovacao.pkl", 'rb') as file:  
+        modelinho = pickle.load(file)
+    resultado = modelinho.predict(array)
+elif taxa == "Taxa de Reprovação":
+    with open("models/model_reprovacao.pkl.pkl", 'rb') as file:  
+        modelinho = pickle.load(file)
+    resultado = modelinho.predict(array)
+else:
+    with open("models/model_abandono.pkl", 'rb') as file:  
+        modelinho = pickle.load(file)
+    resultado = modelinho.predict(array)
+
+
+st.write(resultado)
+
+
