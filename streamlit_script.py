@@ -229,7 +229,9 @@ st.markdown(f"""
 #### {resultado_final}
 """)
 
-terminado = st.checkbox("Marque aqui se oficialmente acabou o período e começou as férias.")
+st.markdown("***")
+
+terminado = st.checkbox("Marque aqui se oficialmente acabou o período e começou as férias...")
 
 if terminado:
     st.write("Hurrayy!")
