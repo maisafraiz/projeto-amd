@@ -23,7 +23,7 @@ st.write('É possível selecionar quais colunas você deseja visualizar e quanta
 
 visualizar = st.radio('Você deseja selecionar as colunas ou visualizar todas?',['Exibir todas', 'Selecionar colunas'])
 
-df_escola_em = pd.read_csv('data/df_escola_em.csv')
+df_escola_em = pd.read_pickle('df_escola_em.pkl')
 
 df_escola_em.rename(columns={'id_escola': 'ID Escola', 'taxa_aprovacao_em': 'Taxa de Aprovação', 'taxa_reprovacao_em': 'Taxa de Reprovação', 'taxa_abandono_em':'Taxa de Abandono', 'ano': 'Ano', 'rede': 'Rede', 'localizacao': 'Localização', 'atu_em': 'Média de Alunos por Turma', 'had_em': 'Média de Horas-Aula Diária', 'tdi_em':'Taxa de Distorção Idade-Série', 'dsu_em':'Porcentual de Docentes com Curso Superior', 'regiao':'Região'}, inplace = True)
 
