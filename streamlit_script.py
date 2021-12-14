@@ -46,7 +46,7 @@ option = st.selectbox(
      '',
      ('Correlação das colunas', 'Média de aprovações por rede e localização', 'Média de reprovações por rede e localização', 'Média da taxa de abandono por rede e localização', 'Média de taxa de abandono por região', 'Média de abandono ao longo do tempo'))
 
-df_escola_em_dummies = pd.read_pickle('df_escola_em_dummies.pkl')
+df_escola_em_dummies = pd.read_csv('data/df_escola_em_dummies.csv')
 df_escola_em_dummies.rename(columns={'taxa_aprovacao_em': 'Taxa de Aprovação', 'taxa_reprovacao_em': 'Taxa de Reprovação', 'taxa_abandono_em':'Taxa de Abandono', 'ano': 'Ano', 'rede_estadual': 'Rede Estadual', 'rede_federal': 'Rede Federal','rede_municipal': 'Rede Municipal','rede_privada': 'Rede Privada', 'localizacao_rural': 'Rural', 'localizacao_urbana': 'Urbana','atu_em': 'Média de Alunos por Turma', 'had_em': 'Média de Horas-Aula Diária', 'tdi_em':'Taxa de Distorção Idade-Série', 'dsu_em':'Porcentual de Docentes com Curso Superior', 'regiao_Centro-Oeste':'Região Centro-Oeste', 'regiao_Nordeste':'Região Nordeste', 'regiao_Sudeste':'Região Sudeste', 'regiao_Sul':'Região Sul', 'regiao_Norte': 'Região Norte'}, inplace = True)
 
 
