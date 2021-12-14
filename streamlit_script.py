@@ -154,7 +154,7 @@ atu_modelo = st.number_input("Digite a média de aluno por turma", step = 0.01)
 had_modelo = st.number_input("Digite a média de horas-aula diárias", step = 0.01)
 tdi_modelo = st.number_input('Digite a taxa de distorção idade-série', step = 0.01)
 dsu_modelo = st.number_input('Digite o porcentual de docentes com curso superior', step = 0.01, help = "Se deseja 100%, digite 100, e não 1")
-rede_modelo = st.selectbox("Escolha a rede", ["Estudual", "Federal", "Municipal", "Privada"], key = 1)
+rede_modelo = st.selectbox("Escolha a rede", ["Estadual", "Federal", "Municipal", "Privada"], key = 1)
 localizacao_modelo = st.selectbox('Escolha a localização', ['Rural', 'Urbana'], key = 2)
 regiao_modelo = st.selectbox('Escolha a região', ['Centro-Oeste', 'Nordeste', 'Norte', 'Sudeste', 'Sul'], key = 3)
 
