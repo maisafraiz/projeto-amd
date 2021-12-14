@@ -30,7 +30,7 @@ df_escola_em.rename(columns={'id_escola': 'ID Escola', 'taxa_aprovacao_em': 'Tax
 if visualizar == "Selecionar colunas":
     colunas = st.multiselect("Selecione todas as colunas que deseja visualizar:", ['ID Escola', 'Taxa de Aprovação','Taxa de Reprovação', 'Taxa de Abandono', 'Ano', 'Rede', 'Localização', 'Média de Alunos por Turma','Média de Horas-Aula Diária','Taxa de Distorção Idade-Série', 'Porcentual de Docentes com Curso Superior', 'Região'])
 else:
-    colunas = ['ID Escola', 'Taxa de Aprovação','Taxa de Reprovação', 'Taxa de Abandono', 'Ano', 'Rede', 'Localização', 'Média de Alunos por Turma','Média de Horas-Aula Diária','Taxa de Distorção Idade-Série', 'Porcentual de Docentes com Curso Superior', 'Região']
+    colunas = df_escola_em.columns
 
 head = st.number_input("Digite quantas linhas você deseja:", 1, 350586)
 
