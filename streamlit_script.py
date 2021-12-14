@@ -34,7 +34,7 @@ else:
 
 head = st.number_input("Digite quantas linhas você deseja:", 1, 350586)
 
-st.dataframe(df_escola_em.head(head)[colunas])
+# st.dataframe(df_escola_em.head(head)[colunas])
 
 st.header('Visualizações')
 
