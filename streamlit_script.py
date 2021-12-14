@@ -221,9 +221,13 @@ else:
     resultado = modelinho.predict(array)
 
 
-st.subheader("Resultado")
+st.subheader(f"Resultado {taxa}")
 
-st.write(taxa, ": ", resultado)
+resultado_final = resultado[0]
+
+st.markdown(f"""
+#### {resultado_final}
+""")
 
 terminado = st.checkbox("Marque aqui se oficialmente acabou o período e começou as férias.")
 
